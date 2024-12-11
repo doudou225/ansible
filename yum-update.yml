@@ -1,0 +1,10 @@
+---
+  - hosts: databases
+    become: true
+    tasks:
+      - name: Updating yum packages
+        ansible.builtin.dnf:
+          name: "*" 
+          state: latest
+          skip_broken: true
+          nobest: true

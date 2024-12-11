@@ -1,0 +1,24 @@
+---
+  - hosts: webservers
+    become: true
+    tasks:
+      - name: Upload index.php to apache ubuntu
+        copy:
+          src: ../index.php
+          dest: /var/www/html
+          mode: 0755
+
+      - name: Restart apache ubuntu
+        service: name=apache2 state=restarted
+
+  - hosts: databases
+    become: true
+    tasks:
+      - name: Upload index.php to apache redhat
+        copy:
+          src: ../index.php
+          dest: /var/www/html
+          mode: 0755
+            
+      - name: Restart apache redhat
+        service: name=httpd state=restarted
