@@ -23,7 +23,7 @@
       - name: Restart apache ubuntu
         service: name=apache2 state=restarted
 
-        # Here we're registering the variable web_contents that list the web folder items
+        # Here we're registering the variable web_contents that holds the stdout of ls -la into the variable
       - name: See web disrectory content
         command: ls -la {{ apache_web_folder }}
         register: web_contents
