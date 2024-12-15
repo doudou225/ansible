@@ -1,7 +1,11 @@
 ---
   - hosts: webservers
+
+    # Declaring a variable
     vars:
       apache_web_folder: "/var/www/html"
+
+        # This allows to elevate our privilege with --ask-become-pass during execution
     become: true
     tasks:
       - name: Upload index.php to apache ubuntu
@@ -10,6 +14,7 @@
           dest: "{{ apache_web_folder }}"
           mode: 0755
 
+        # Here we're using an auto-generated variable from the Gather facts to get a server name
       - name: File content from Gathering facts steps
         copy:
           dest: "{{ apache_web_folder }}/info.php"
@@ -17,6 +22,16 @@
 
       - name: Restart apache ubuntu
         service: name=apache2 state=restarted
+
+        # Here we're registering the variable web_contents that list the web folder items
+      - name: See web disrectory content
+        command: ls -la {{ apache_web_folder }}
+        register: web_contents
+
+        # Here we use the registered variable web_contents with the debug module to show the variable in stdout
+      - name: Debug web directory
+        debug:
+          msg: "{{ web_contents }}"
 
   - hosts: databases
     vars:
@@ -36,3 +51,11 @@
 
       - name: Restart apache redhat
         service: name=httpd state=restarted
+
+      - name: See web disrectory content
+        command: ls -la {{ apache_web_folder }}
+        register: web_contents
+
+      - name: Debug web directory
+        debug:
+          msg: "{{ web_contents }}"
