@@ -13,19 +13,12 @@
           src: ../index.php
           dest: "{{ apache_web_folder }}"
           mode: 0755
-        tags: php_file
 
         # Here we're using an auto-generated variable from the Gather facts to get a server name
       - name: File content from Gathering facts steps
         copy:
           dest: "{{ apache_web_folder }}/info.php"
           content: "<h1> Info about this webserver: {{ ansible_hostname }}</h1>"
-
-      - name: Deleting the default apache index.html file for index.php
-        file:
-          path: /var/www/html/index.html
-          state: absent
-        tags: delete_html
 
       - name: Restart apache ubuntu
         service: name=apache2 state=restarted

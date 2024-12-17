@@ -1,0 +1,27 @@
+# Using prompts and conditional
+
+---
+  - hosts: webservers
+    become: true
+
+    vars:
+      apache_web_folder: "/var/www/html/"
+
+    # Using the vars_prompt keyword, declare twop variables "webfile_refresh" and "restart_service" fed from user inputs
+    vars_prompt:
+      - name: "webfile_refresh"
+        prompt: "Do you want to update the webfiles?"
+      - name: "restart_service"
+        prompt: "Do you want to restart apache?"
+
+    tasks:
+      - name: Upload application files
+        copy:
+          src: webfile/
+          dest: "{{ apache_web_folder }}"
+          mode: 0755
+        when: webfile_refresh == 'yes'
+
+      - name: Restart the apache service
+        command: systemctl restart apache2
+        when: restart_service == 'yes'

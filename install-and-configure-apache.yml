@@ -1,0 +1,6 @@
+# Congregating playbooks
+
+---
+
+  - import_playbook: install-services.yml
+  - import_playbook: setup-apache-more-variables.yml

@@ -1,0 +1,13 @@
+# Chech apache status
+---
+
+  - hosts: webservers
+    become: true
+    tasks:
+      - name: Check apache status
+        command: service apache2 status
+        changed_when: false
+
+      - name: Thi should fail but won't!
+        command: /bin/false
+        ignore_errors: yes
