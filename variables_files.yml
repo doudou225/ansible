@@ -1,0 +1,6 @@
+# list of variables
+---
+
+service_list:
+- apache2
+- sshd

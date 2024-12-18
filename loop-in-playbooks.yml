@@ -1,0 +1,24 @@
+# loop example
+---
+  - hosts: webservers
+    become: true
+
+    vars_files:
+      - variables_files.yml
+
+    tasks:
+      - name: Check services
+        service:
+          name: "{{ item }}"
+          state: started
+        loop:
+          - apache2
+          - sshd
+        ignore_errors: yes
+
+      - name: Check services pulled from variable files
+        service:
+          name: "{{ item }}"
+          state: started
+        loop: "{{ service_list }}"
+        ignore_errors: yes
